@@ -2,9 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class PlacementSystem : MonoBehaviour
 {
+    [SerializeField]
+    private Tilemap tilemap;
 
     [SerializeField]
     private GameObject mouseIndicator, cellIndicator;
@@ -15,17 +18,24 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField]
     private ObjectsDatabaseSO database;
     private int selectedObjectIndex = 1;
+    private GridData towerData;
+
+    private Renderer previewRenderer;
+
+    private List<GameObject> placedGameObjects = new();
 
     Vector3 offset;
 
     private void Start()
     {
         StopPlacement();
+        towerData = new GridData();
+        previewRenderer = cellIndicator.GetComponentInChildren<Renderer>();
+
     }
 
     public void StartPlacement(int ID)
     {
-        Debug.Log("0");
         StopPlacement();
         selectedObjectIndex = database.objectsData.FindIndex(data => data.ID == ID); //acts as for loop
         if(selectedObjectIndex < 0)
@@ -40,17 +50,41 @@ public class PlacementSystem : MonoBehaviour
 
     private void PlaceStructure()
     {
-        Debug.Log("1");
-        //if(inputManager.isPointerOverUI())
-        //{
-        //    return;
-        //}
+        if(inputManager.isPointerOverUI())
+        {
+            return;
+        }
 
         Vector3 mousePosition = inputManager.GetSelectedMapPosition(); //gets the location of what the mouse is pointing at
         Vector3Int gridPosition = grid.WorldToCell(mousePosition); //converst that position to cell coordinates and stores it
+
+        bool placementValidity = CheckPlacementValidity(gridPosition, selectedObjectIndex);//checks if thesize is too big
+       
+        if (placementValidity == false)
+            return;
+
         GameObject newObject = Instantiate(database.objectsData[selectedObjectIndex].Prefab);
-        Debug.Log("2");
         newObject.transform.position = grid.CellToWorld(gridPosition); //converst position back into world coords
+        placedGameObjects.Add(newObject);
+        GridData selectedData = towerData;
+        selectedData.AddObjectAt(gridPosition,
+            database.objectsData[selectedObjectIndex].size,
+            database.objectsData[selectedObjectIndex].ID,
+            placedGameObjects.Count - 1);
+
+    }
+
+    private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)
+    {
+        TileBase hitTile = tilemap.GetTile(gridPosition); //this part of the code is mine, it checks what tile is selected and only builds on buildable tiles
+        if (hitTile.name != "Floor")
+        {
+            //cellIndicator.SetActive(false);
+            return false;
+        }
+
+        GridData selectedData = towerData;
+        return selectedData.CanPlaceObjectAt(gridPosition, database.objectsData[selectedObjectIndex].size);//checks if the size is too big
     }
 
     private void StopPlacement()
@@ -67,6 +101,13 @@ public class PlacementSystem : MonoBehaviour
             return;
         Vector3 mousePosition = inputManager.GetSelectedMapPosition(); //gets the location of what the mouse is pointing at
         Vector3Int gridPosition = grid.WorldToCell(mousePosition); //converst that position to cell coordinates and stores it
+
+        bool placementValidity = CheckPlacementValidity(gridPosition, selectedObjectIndex);
+        if (placementValidity == false)
+            previewRenderer.material.color = Color.red;
+        else
+            previewRenderer.material.color = Color.white;
+
         mouseIndicator.transform.position = mousePosition; //mouses the indicator to that grid posiotion
         cellIndicator.transform.position = grid.CellToWorld(gridPosition); //converst position back into world coords
 
