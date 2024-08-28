@@ -25,6 +25,7 @@ public class PlacementSystem : MonoBehaviour
 
     public void StartPlacement(int ID)
     {
+        Debug.Log("0");
         StopPlacement();
         selectedObjectIndex = database.objectsData.FindIndex(data => data.ID == ID); //acts as for loop
         if(selectedObjectIndex < 0)
@@ -39,20 +40,23 @@ public class PlacementSystem : MonoBehaviour
 
     private void PlaceStructure()
     {
-        if(inputManager.isPointerOverUI())
-        {
-            return;
-        }
+        Debug.Log("1");
+        //if(inputManager.isPointerOverUI())
+        //{
+        //    return;
+        //}
 
         Vector3 mousePosition = inputManager.GetSelectedMapPosition(); //gets the location of what the mouse is pointing at
         Vector3Int gridPosition = grid.WorldToCell(mousePosition); //converst that position to cell coordinates and stores it
         GameObject newObject = Instantiate(database.objectsData[selectedObjectIndex].Prefab);
+        Debug.Log("2");
         newObject.transform.position = grid.CellToWorld(gridPosition); //converst position back into world coords
     }
 
     private void StopPlacement()
     {
-        cellIndicator.SetActive(true);
+        selectedObjectIndex = -1;
+        cellIndicator.SetActive(false);
         inputManager.OnClick -= PlaceStructure; //unsubscribes from events
         inputManager.OnExit -= StopPlacement;
     }

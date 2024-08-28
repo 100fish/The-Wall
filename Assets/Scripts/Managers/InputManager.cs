@@ -20,7 +20,10 @@ public class InputManager : MonoBehaviour
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
+        {
             OnClick?.Invoke();
+            //Debug.Log("Click!");
+        }
         if (Input.GetKeyDown(KeyCode.Escape))
             OnExit?.Invoke();
     }
