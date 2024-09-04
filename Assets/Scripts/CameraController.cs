@@ -5,7 +5,11 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     public Transform cameraTransform;
-    
+
+    public Vector2 minXAndY;
+    public Vector2 maxXandY;
+
+
     public float normalSpeed;
     public float fastSpeed;
     public float movementSpeed;
@@ -37,6 +41,8 @@ public class CameraController : MonoBehaviour
         HandleMouseInput();
         HandleMovementInput();
     }
+
+
 
     void HandleMouseInput()
     {
@@ -102,11 +108,11 @@ public class CameraController : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
-            newPosition += (transform.forward * movementSpeed);
+            newPosition += (transform.up * movementSpeed);
         }
         if(Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
         {
-            newPosition += (transform.forward * -movementSpeed);
+            newPosition += (transform.up * -movementSpeed);
         }
         if(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
         {
@@ -135,6 +141,8 @@ public class CameraController : MonoBehaviour
             newZoom -= zoomAmount;
         }
 
+        newPosition.x = Mathf.Clamp(newPosition.x, minXAndY.x, maxXandY.x);
+        newPosition.y = Mathf.Clamp(newPosition.y, minXAndY.y, maxXandY.y);
         transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * movementTime);
         transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, Time.deltaTime * movementTime);
         cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, newZoom, Time.deltaTime * movementTime);
