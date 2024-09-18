@@ -10,19 +10,22 @@ public class BasicEnemyMovement : MonoBehaviour
     [SerializeField] public Transform goal;
     private Rigidbody m_Rigidbody;
 
-    private bool m_Follow;
+    private bool m_Follow =true;
 
     // Start is called before the first frame update
     void Start()
     {
         m_NavAgent = GetComponent<NavMeshAgent>();
         m_Rigidbody = GetComponent<Rigidbody>();
-        m_Follow = false;
+       // m_Follow = false;
+        m_NavAgent.SetDestination(goal.position);
+        m_NavAgent.isStopped = false;
     }
 
     private void OnEnable()
     {
         //m_Rigidbody.isKinematic = false;
+
     }
 
     private void OnDisable()
@@ -36,8 +39,7 @@ public class BasicEnemyMovement : MonoBehaviour
         if (m_Follow == false)
             return;
 
-        m_NavAgent.SetDestination(goal.position);
-        m_NavAgent.isStopped = false;
+  
        
     }
 }
