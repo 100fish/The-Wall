@@ -38,63 +38,11 @@ public class CameraController : MonoBehaviour
     
     void LateUpdate()
     {
-        HandleMouseInput();
+        
         HandleMovementInput();
     }
 
 
-
-    void HandleMouseInput()
-    {
-        if(Input.mouseScrollDelta.y != 0)
-        {
-            newZoom += Input.mouseScrollDelta.y * zoomAmount;
-        }
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            Plane plane = new Plane(Vector3.up, Vector3.zero);
-
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            float entry;
-
-            if(plane.Raycast(ray, out entry))
-            {
-                dragStartPosition = ray.GetPoint(entry);
-            }
-        }
-        if (Input.GetMouseButton(0))
-        {
-            Plane plane = new Plane(Vector3.up, Vector3.zero);
-
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            float entry;
-
-            if (plane.Raycast(ray, out entry))
-            {
-                dragCurrentPosition = ray.GetPoint(entry);
-
-                newPosition = transform.position + dragStartPosition - dragCurrentPosition;
-            }
-        }
-
-        if (Input.GetMouseButtonDown(2))
-        {
-            rotateStartPosition = Input.mousePosition;
-        }
-        if (Input.GetMouseButton(2))
-        {
-            rotateCurrentPosition = Input.mousePosition;
-
-            Vector3 difference = rotateStartPosition - rotateCurrentPosition;
-
-            rotateStartPosition = rotateCurrentPosition;
-
-            newRotation *= Quaternion.Euler(Vector3.up * (-difference.x / 5f));
-        }
-    }
 
     void HandleMovementInput()
     {
