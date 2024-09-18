@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/scripts/GUN/CamraRayCast.cs.meta
+guid: bbcaa496c22af8743b43ab84f3010fcb
+========
+guid: 34d316e2d8687d74d93d58624693e37a
+>>>>>>>> main:Assets/scripts/GUN/Managers/InputManager.cs.meta
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
