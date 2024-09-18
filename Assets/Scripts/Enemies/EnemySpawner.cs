@@ -9,7 +9,6 @@ public class EnemySpawner : MonoBehaviour
     public Transform spawnTransform;
     public float spawnTimer = 10;
     public List<GameObject> enemyList = new List<GameObject>();
-
     // Start is called before the first frame update
     void Start()
     {

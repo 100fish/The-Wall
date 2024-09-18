@@ -8,7 +8,8 @@ public class PlacementSystem : MonoBehaviour
 {
     [SerializeField]
     private Tilemap tilemap;
-
+    [SerializeField]
+    public EnemySpawner enemySpawner;
     [SerializeField]
     private GameObject mouseIndicator, cellIndicator;
     [SerializeField]
