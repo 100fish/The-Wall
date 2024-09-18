@@ -72,6 +72,7 @@ public class PlacementSystem : MonoBehaviour
             database.objectsData[selectedObjectIndex].size,
             database.objectsData[selectedObjectIndex].ID,
             placedGameObjects.Count - 1);
+        
 
     }
 
