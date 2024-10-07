@@ -1,17 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class Turret1Shoot : MonoBehaviour
+public class Turret1ShootPREFAB : MonoBehaviour
 {
     public EnemySpawner enemySpawner;
-    //public Transform turretAimPoint;
-    //public Transform turret;
-    //public Transform turretPoint;
-    //public Transform turretGun;
-    //public float distance = 200;
+    public Transform turretAimPoint;
+    public Transform turret;
+    public Transform turretPoint;
+    public Transform turretGun;
+    public float distance = 200;
     private float shootTimer = 1;
     private int shootSpeed = 1;
     private LineRenderer lr;
@@ -27,7 +26,22 @@ public class Turret1Shoot : MonoBehaviour
     }
 
 
-    //bullet.GetComponent<BulletScript>().shooter = gameObject;
+    void Shoot()
+    {
+        RaycastHit hit = new RaycastHit();
+
+
+       // if (Physics.Raycast(turretGun.position, GetClosestEnemy(enemySpawner.enemyList), out hit, distance))
+        {
+            Debug.Log(hit.transform.name);
+            Rigidbody rb = hit.transform.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.AddForce(turret.forward, ForceMode.Impulse);
+
+            }
+        }
+    }
 
     private Transform GetClosestEnemyPos(List<GameObject> enemies)
     {
@@ -64,13 +78,12 @@ public class Turret1Shoot : MonoBehaviour
                 minDist = dist;
             }
         }
-        Debug.Log(transform.position);
         return target;
     }
 
     private void OnEnable()
     {
-        //points[0] = turretGun;
+        points[0] = turretGun;
     }
 
     public void SetUpLine(Transform[] points)
@@ -86,22 +99,15 @@ public class Turret1Shoot : MonoBehaviour
         shootTimer -= Time.deltaTime * shootSpeed;
         if (shootTimer < 0)
         {
-            Shoot();
-            shootTimer = 5;
-            Debug.Log("shot");
-        }
-    }
+            GameObject target = GetClosestEnemy(enemySpawner.enemyList);
+            points[1] = target.transform;
 
-    private void Shoot()
-    {
-        Debug.Log(enemySpawner);
-        GameObject target = GetClosestEnemy(enemySpawner.enemyList);
-        points[1] = target.transform;
+            for (int i = 0; i < points.Length; i++)
+            {
+                lr.SetPosition(i, points[i].position);
+            }
 
-        for (int i = 0; i < points.Length; i++)
-        {
-            lr.SetPosition(i, points[i].position);
+            Destroy(target);
         }
-        Destroy(target);
     }
 }

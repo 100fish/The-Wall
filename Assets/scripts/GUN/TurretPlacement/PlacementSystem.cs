@@ -72,8 +72,9 @@ public class PlacementSystem : MonoBehaviour
             database.objectsData[selectedObjectIndex].size,
             database.objectsData[selectedObjectIndex].ID,
             placedGameObjects.Count - 1);
-        
 
+        newObject.GetComponent<Turret1Shoot>().enemySpawner = enemySpawner;
+        Debug.Log(newObject.GetComponent<Turret1Shoot>().enemySpawner);
     }
 
     private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)
