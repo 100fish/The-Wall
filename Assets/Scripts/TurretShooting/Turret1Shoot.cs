@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -16,6 +17,8 @@ public class Turret1Shoot : MonoBehaviour
     private int shootSpeed = 1;
     private LineRenderer lr;
     private Transform[] points;
+    private GameObject empty;
+
     //public float hitForce = 20;
 
     //Camera cam;
@@ -24,6 +27,7 @@ public class Turret1Shoot : MonoBehaviour
     void Start()
     {
         lr = GetComponent<LineRenderer>();
+        empty = new GameObject();
     }
 
 
@@ -33,7 +37,7 @@ public class Turret1Shoot : MonoBehaviour
     {
 
         Transform tMin = null;
-        float minDist = 3;
+        float minDist = 15;
         Vector3 currentPOS = transform.position;
         foreach (GameObject t in enemies)
         {
@@ -50,21 +54,28 @@ public class Turret1Shoot : MonoBehaviour
 
     private GameObject GetClosestEnemy(List<GameObject> enemies)
     {
-
-        GameObject target = null;
-        float minDist = 3;
-        Vector3 currentPOS = transform.position;
-        foreach (GameObject t in enemies)
+        GameObject target = null; //instantiates target as an empty gameobject variable
+        float minDist = 12; //instantiates the minimum distance to three
+        Vector3 currentPOS = transform.position; //sets the currentpos to the current position of the tower (works perfectly)
+        foreach (GameObject t in enemies) //for each gameobject in the enemies list from EnemySpawner (enemy list works)
         {
-            Transform tt = t.transform;
-            float dist = Vector3.Distance(tt.position, currentPOS);
-            if (dist < minDist)
+            if (t.gameObject.tag == "ShootIgnore")
+                continue;
+            //Debug.Log(t.name);
+            Transform tt = t.transform; //transform value tt is defined as the transform of a particular enemy
+            float dist = Vector3.Distance(tt.position, currentPOS); //dist = the distance between the current pos and tt
+            Debug.Log(dist + "," + t.name);
+            if (dist < minDist) // if distance is less than the min distance
             {
+                Debug.Log(t.name);
                 target = t;
                 minDist = dist;
             }
         }
-        Debug.Log(transform.position);
+
+        //Debug.Log(target.name);
+
+        //Debug.Log(transform.position);
         return target;
     }
 
@@ -84,24 +95,43 @@ public class Turret1Shoot : MonoBehaviour
     {
         //Turret.LookAt(turretAimPoint.forward * 100);
         shootTimer -= Time.deltaTime * shootSpeed;
-        if (shootTimer < 0)
+        //Debug.Log(shootTimer);
+        if (shootTimer <= 0)
         {
-            Shoot();
-            shootTimer = 5;
+            shootTimer = 0.5f;
             Debug.Log("shot");
+            Shoot();
+
         }
     }
 
     private void Shoot()
     {
-        Debug.Log(enemySpawner);
+        //Debug.Log(enemySpawner);
         GameObject target = GetClosestEnemy(enemySpawner.enemyList);
-        points[1] = target.transform;
+        //points[1] = target.transform;
 
-        for (int i = 0; i < points.Length; i++)
+        //for (int i = 0; i < points.Length; i++)
+        //{
+        //    lr.SetPosition(i, points[i].position);
+        //}
+        if (target != null)
         {
-            lr.SetPosition(i, points[i].position);
+
+            //gets the enemy id from the enemy gameobject name
+            char[] idGet = { 'e','n','m','y'};
+            int deathID = Int32.Parse(target.name.TrimStart(idGet));
+
+            Destroy(target); //kills the enemy
+
+            //replaces the enemy position in the list with an empty gameobject
+            Debug.Log("DeathID is " + deathID);
+            enemySpawner.enemyList[deathID] = Instantiate(empty);
+            enemySpawner.enemyList[deathID].gameObject.tag = "ShootIgnore";
+
+            Debug.Log("ID slot is " + enemySpawner.enemyList[deathID]);
+            Debug.Log("DEATH for " + target.name);
         }
-        Destroy(target);
+
     }
 }

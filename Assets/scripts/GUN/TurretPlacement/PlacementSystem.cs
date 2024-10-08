@@ -79,12 +79,18 @@ public class PlacementSystem : MonoBehaviour
 
     private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)
     {
-        TileBase hitTile = tilemap.GetTile(gridPosition); //this part of the code is mine, it checks what tile is selected and only builds on buildable tiles
-        if (hitTile.name != "Floor")
+
+        if (gridPosition.z != 0)
         {
-            //cellIndicator.SetActive(false);
+            cellIndicator.SetActive(false);
             return false;
         }
+
+
+        TileBase hitTile = tilemap.GetTile(gridPosition); //this part of the code is mine, it checks what tile is selected and only builds on buildable tiles
+        if (hitTile.name != "Floor")
+            return false;
+        
 
         GridData selectedData = towerData;
         return selectedData.CanPlaceObjectAt(gridPosition, database.objectsData[selectedObjectIndex].size);//checks if the size is too big
@@ -100,6 +106,7 @@ public class PlacementSystem : MonoBehaviour
 
     private void Update()
     {
+        cellIndicator.SetActive(true);
         if (selectedObjectIndex < 0)
             return;
         Vector3 mousePosition = inputManager.GetSelectedMapPosition(); //gets the location of what the mouse is pointing at

@@ -5,10 +5,12 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     //private GameManager gameManager;
+    public Transform goal;
     public GameObject enemyPrefab;
     public Transform spawnTransform;
     public float spawnTimer = 10;
     public List<GameObject> enemyList = new List<GameObject>();
+    public int enemyID = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,16 +31,29 @@ public class EnemySpawner : MonoBehaviour
                 enemyList.Add(Instantiate(enemyPrefab,
                 spawnTransform.position,
                 spawnTransform.rotation));
+                enemyList[enemyID].name = "enemy" + enemyID;
+
+                enemyList[enemyID].GetComponent<BasicEnemyMovement>().goal = goal;
+
+                enemyID++;
+                
+
                 if (Random.Range(1, 5) < 3)
                 {
                     enemyList.Add(Instantiate(enemyPrefab,
                     spawnTransform.position,
                     spawnTransform.rotation));
-                }
+                    enemyList[enemyID].name = "enemy" + enemyID;
+
+                    enemyList[enemyID].GetComponent<BasicEnemyMovement>().goal = goal;
+
+                    enemyID++;
+            }
                 //Debug.Log(enemyList[0]);
             }
         //}
 
+        //Debug.Log(enemyList.Count);
     }
 
     //public void DestroyEnemies()
