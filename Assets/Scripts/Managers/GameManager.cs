@@ -11,10 +11,14 @@ public class GameManager : MonoBehaviour
     public int baseHealth = 100;
     public int health = 100;
     public float roundTime = 0;
+    public int money = 5;
 
     public GameObject menuPanel;
     public GameObject gameplayPanel;
 
+    public TextMeshProUGUI moneyText; 
+    public TextMeshProUGUI healthText;
+    public TextMeshProUGUI titleText;
     public Button newGameButton;
     private GameObject empty;
 
@@ -40,7 +44,8 @@ public class GameManager : MonoBehaviour
         Instance = this;
         gameState = GameState.GameOver;
         empty = new GameObject();
-
+        titleText.text = "Welcome to FPFTD!";
+        gameplayPanel.SetActive(false);
     }
 
     void Update()
@@ -82,16 +87,19 @@ public class GameManager : MonoBehaviour
     private void GameStatePlaying()
     {
         roundTime += Time.deltaTime;
+        healthText.text = "Base health: " + health;
+        moneyText.text = "You have $" + money;
 
         if (health < 1)
         {
-            gameState = GameState.Start;
+            gameState = GameState.GameOver;
             foreach (GameObject enemy in enemySpawner.enemyList)
             {
                 Destroy(enemy);
             }
             gameplayPanel.SetActive(false);
             menuPanel.SetActive(true);
+            titleText.text = "Your base was destroyed";
         }
     }
 

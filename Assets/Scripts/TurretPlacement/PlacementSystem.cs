@@ -51,24 +51,26 @@ public class PlacementSystem : MonoBehaviour
 
     private void PlaceStructure()
     {
-        Debug.Log("Definitely not stantiating");
 
         //if (inputManager.isPointerOverUI())
         //{
         //   return;
         //}
 
+        if (database.objectsData[selectedObjectIndex].cost > GameManager.Instance.money)
+            return;
+
+        GameManager.Instance.money -= database.objectsData[selectedObjectIndex].cost;
+
         Vector3 mousePosition = inputManager.GetSelectedMapPosition(); //gets the location of what the mouse is pointing at
         Vector3Int gridPosition = grid.WorldToCell(mousePosition); //converst that position to cell coordinates and stores it
 
         bool placementValidity = CheckPlacementValidity(gridPosition, selectedObjectIndex);//checks if thesize is too big
 
-        Debug.Log("Not Instantiating");
 
         if (placementValidity == false)
             return;
 
-        Debug.Log("Instantiating");
         GameObject newObject = Instantiate(database.objectsData[selectedObjectIndex].Prefab);
         newObject.transform.position = grid.CellToWorld(gridPosition); //converst position back into world coords
         placedGameObjects.Add(newObject);
