@@ -17,7 +17,6 @@ public class Turret1Shoot : MonoBehaviour
     private int shootSpeed = 1;
     private LineRenderer lr;
     private Transform[] points;
-    private GameObject empty;
 
     public BaseDamage baseDamage;
 
@@ -29,7 +28,6 @@ public class Turret1Shoot : MonoBehaviour
     void Start()
     {
         lr = GetComponent<LineRenderer>();
-        empty = new GameObject();
         //baseDamage.turret1Shoot = this;
     }
 
@@ -120,26 +118,9 @@ public class Turret1Shoot : MonoBehaviour
         //}
         if (target != null)
         {
-            Kill(target);
+            GameManager.Instance.Kill(target);
         }
 
-    }
-
-    public void Kill(GameObject target)
-    {
-            //gets the enemy id from the enemy gameobject name
-            char[] idGet = { 'e','n','m','y'};
-            int deathID = Int32.Parse(target.name.TrimStart(idGet));
-
-            Destroy(target); //kills the enemy
-
-            //replaces the enemy position in the list with an empty gameobject
-            Debug.Log("DeathID is " + deathID);
-            enemySpawner.enemyList[deathID] = Instantiate(empty);
-            enemySpawner.enemyList[deathID].gameObject.tag = "ShootIgnore";
-
-            Debug.Log("ID slot is " + enemySpawner.enemyList[deathID]);
-            Debug.Log("DEATH for " + target.name);
     }
 
 

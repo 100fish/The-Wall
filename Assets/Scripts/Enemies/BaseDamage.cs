@@ -17,7 +17,7 @@ public class BaseDamage : MonoBehaviour
 
             GameManager.Instance.health--;
             Debug.Log(other.gameObject);
-            //Kill(other.gameObject);
+            GameManager.Instance.Kill(other.gameObject);
         }
 
     }
