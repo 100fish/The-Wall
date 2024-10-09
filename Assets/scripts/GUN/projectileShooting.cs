@@ -31,7 +31,20 @@ public class projectileShooting : MonoBehaviour
             if (rb != null)
             {
                 rb.AddForce(gun.forward * hitForce, ForceMode.Impulse);
-                
+
+                Target targetHit = hit.transform.GetComponent<Target>();
+                if (targetHit != null)
+                {
+                    //If the target hasn't been hit before
+                    if(targetHit.IsHit() == false)
+                    {
+                        //Add points!!!
+                        int newPoints = targetHit.Damage();
+                        //Deal with points
+                        Debug.Log(newPoints);
+                    }
+                   
+                }
             }
         }
     }
