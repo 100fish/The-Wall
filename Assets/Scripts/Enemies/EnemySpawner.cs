@@ -11,6 +11,7 @@ public class EnemySpawner : MonoBehaviour
     public float spawnTimer = 10;
     public List<GameObject> enemyList = new List<GameObject>();
     public int enemyID = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,10 +21,9 @@ public class EnemySpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        //if (GameManager.Instance.gameState == GameManager.GameState.Playing)
-        //{
-            spawnTimer -= Time.deltaTime * (Time.fixedTime / 20);
+        if (GameManager.Instance.gameState == GameManager.GameState.Playing)
+        {
+            spawnTimer -= Time.deltaTime * (GameManager.Instance.roundTime / 20);
             //Debug.Log(spawnTimer);
             if (spawnTimer < 0)
             {
@@ -48,19 +48,13 @@ public class EnemySpawner : MonoBehaviour
                     enemyList[enemyID].GetComponent<BasicEnemyMovement>().goal = goal;
 
                     enemyID++;
-            }
-                //Debug.Log(enemyList[0]);
-            }
-        //}
+                }
 
-        //Debug.Log(enemyList.Count);
+            }
+        }   
+
+
     }
 
-    //public void DestroyEnemies()
-    //{
-    //    foreach (GameObject enemy in enemyList)
-    //    {
-    //        GameObject.Destroy(enemy);
-    //    }
-    //}
+
 }

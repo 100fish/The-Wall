@@ -19,6 +19,8 @@ public class Turret1Shoot : MonoBehaviour
     private Transform[] points;
     private GameObject empty;
 
+    public BaseDamage baseDamage;
+
     //public float hitForce = 20;
 
     //Camera cam;
@@ -28,6 +30,7 @@ public class Turret1Shoot : MonoBehaviour
     {
         lr = GetComponent<LineRenderer>();
         empty = new GameObject();
+        //baseDamage.turret1Shoot = this;
     }
 
 
@@ -117,7 +120,13 @@ public class Turret1Shoot : MonoBehaviour
         //}
         if (target != null)
         {
+            Kill(target);
+        }
 
+    }
+
+    public void Kill(GameObject target)
+    {
             //gets the enemy id from the enemy gameobject name
             char[] idGet = { 'e','n','m','y'};
             int deathID = Int32.Parse(target.name.TrimStart(idGet));
@@ -131,7 +140,7 @@ public class Turret1Shoot : MonoBehaviour
 
             Debug.Log("ID slot is " + enemySpawner.enemyList[deathID]);
             Debug.Log("DEATH for " + target.name);
-        }
-
     }
+
+
 }
