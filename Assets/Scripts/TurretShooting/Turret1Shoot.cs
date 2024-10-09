@@ -7,32 +7,24 @@ using UnityEngine.UIElements;
 
 public class Turret1Shoot : MonoBehaviour
 {
+    [SerializeField] private Transform[] points = { null, null };
+    [SerializeField] public LineController line;
+
     public EnemySpawner enemySpawner;
-    //public Transform turretAimPoint;
-    //public Transform turret;
-    //public Transform turretPoint;
-    //public Transform turretGun;
-    //public float distance = 200;
+    public Transform shootPos;
+
     private float shootTimer = 1;
     private int shootSpeed = 1;
-    private LineRenderer lr;
-    private Transform[] points;
+    private float lineTimer = 0.3f;
+    private bool lineComplete = false;
+    private bool shooting = false;
+    private GameObject target;
 
-    public BaseDamage baseDamage;
-
-    //public float hitForce = 20;
-
-    //Camera cam;
-
-    // Start is called before the first frame update
     void Start()
     {
-        lr = GetComponent<LineRenderer>();
-        //baseDamage.turret1Shoot = this;
+        line.SetUpLine(points);
+        points[1] = shootPos;
     }
-
-
-    //bullet.GetComponent<BulletScript>().shooter = gameObject;
 
     private Transform GetClosestEnemyPos(List<GameObject> enemies)
     {
@@ -62,7 +54,6 @@ public class Turret1Shoot : MonoBehaviour
         {
             if (t.gameObject.tag == "ShootIgnore")
                 continue;
-            //Debug.Log(t.name);
             Transform tt = t.transform; //transform value tt is defined as the transform of a particular enemy
             float dist = Vector3.Distance(tt.position, currentPOS); //dist = the distance between the current pos and tt
             Debug.Log(dist + "," + t.name);
@@ -73,31 +64,25 @@ public class Turret1Shoot : MonoBehaviour
                 minDist = dist;
             }
         }
-
-        //Debug.Log(target.name);
-
-        //Debug.Log(transform.position);
         return target;
     }
 
-    private void OnEnable()
-    {
-        //points[0] = turretGun;
-    }
-
-    public void SetUpLine(Transform[] points)
-    {
-            lr.positionCount = points.Length;
-            this.points = points;
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        //Turret.LookAt(turretAimPoint.forward * 100);
         shootTimer -= Time.deltaTime * shootSpeed;
-        //Debug.Log(shootTimer);
-        if (shootTimer <= 0)
+        if (shooting)
+        {
+            lineTimer -= Time.deltaTime;
+            line.SetUpLine(points);
+            if (lineTimer < 0)
+            {
+                lineTimer = 0.3f;
+                GameManager.Instance.Kill(target);
+                shooting = false;
+                points[0] = null;
+            }    
+        }
+        else if (shootTimer <= 0)
         {
             shootTimer = 0.5f;
             Debug.Log("shot");
@@ -108,17 +93,11 @@ public class Turret1Shoot : MonoBehaviour
 
     private void Shoot()
     {
-        //Debug.Log(enemySpawner);
-        GameObject target = GetClosestEnemy(enemySpawner.enemyList);
-        //points[1] = target.transform;
-
-        //for (int i = 0; i < points.Length; i++)
-        //{
-        //    lr.SetPosition(i, points[i].position);
-        //}
+        target = GetClosestEnemy(enemySpawner.enemyList);
         if (target != null)
         {
-            GameManager.Instance.Kill(target);
+            points[0] = target.transform;
+            shooting = true;
         }
 
     }

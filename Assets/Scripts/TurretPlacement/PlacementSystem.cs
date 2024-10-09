@@ -20,6 +20,7 @@ public class PlacementSystem : MonoBehaviour
     private ObjectsDatabaseSO database;
     private int selectedObjectIndex = 1;
     private GridData towerData;
+    public LineController lc;
 
     private Renderer previewRenderer;
 
@@ -81,7 +82,7 @@ public class PlacementSystem : MonoBehaviour
             placedGameObjects.Count - 1);
 
         newObject.GetComponent<Turret1Shoot>().enemySpawner = enemySpawner;
-        Debug.Log(newObject.GetComponent<Turret1Shoot>().enemySpawner);
+        newObject.GetComponent<Turret1Shoot>().line = lc;
     }
 
     private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)
