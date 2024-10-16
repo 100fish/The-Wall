@@ -86,7 +86,7 @@ public class Turret1Shoot : MonoBehaviour
         if (shootTimer < 0)
         {
             shootTimer = 0.5f;
-            Debug.Log("shot");
+            //Debug.Log("shot");
             Shoot();
 
         }
@@ -95,7 +95,7 @@ public class Turret1Shoot : MonoBehaviour
     private void Shoot()
     {
         target = GetClosestEnemy(enemySpawner.enemyList);
-        Debug.Log(target);
+        //Debug.Log(target);
         if (target != null)
         {
             //points[0] = target.transform;

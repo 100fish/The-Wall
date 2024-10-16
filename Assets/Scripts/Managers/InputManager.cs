@@ -20,6 +20,8 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
+     
+        
         if (Input.GetMouseButtonDown(0))
         {
             OnClick?.Invoke();
@@ -27,6 +29,8 @@ public class InputManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Escape))
             OnExit?.Invoke();
+        
+
     }
 
     public bool isPointerOverUI()

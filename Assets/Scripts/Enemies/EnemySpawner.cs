@@ -22,9 +22,9 @@ public class EnemySpawner : MonoBehaviour
     void Update()
     {
         //Debug.Log(GameManager.Instance.gameState);
-        if (GameManager.Instance.gameState == GameManager.GameState.Playing)
+        if (GameManager.Instance.gameState == GameManager.GameState.PlayingTDF)
         {
-            spawnTimer -= Time.deltaTime * (GameManager.Instance.roundTime / 10);
+            spawnTimer -= Time.deltaTime * (GameManager.Instance.roundTime / 2);
             //Debug.Log(spawnTimer);
             if (spawnTimer < 0)
             {

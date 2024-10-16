@@ -61,8 +61,6 @@ public class PlacementSystem : MonoBehaviour
         if (database.objectsData[selectedObjectIndex].cost > GameManager.Instance.money)
             return;
 
-        GameManager.Instance.money -= database.objectsData[selectedObjectIndex].cost;
-
         Vector3 mousePosition = inputManager.GetSelectedMapPosition(); //gets the location of what the mouse is pointing at
         Vector3Int gridPosition = grid.WorldToCell(mousePosition); //converst that position to cell coordinates and stores it
 
@@ -81,8 +79,10 @@ public class PlacementSystem : MonoBehaviour
             database.objectsData[selectedObjectIndex].ID,
             placedGameObjects.Count - 1);
 
-        newObject.GetComponent<Turret1Shoot>().enemySpawner = enemySpawner;
-        newObject.GetComponent<Turret1Shoot>().line = lc;
+        //newObject.GetComponent<Turret1Shoot>().enemySpawner = enemySpawner;
+        //newObject.GetComponent<Turret1Shoot>().line = lc;
+
+        GameManager.Instance.money -= database.objectsData[selectedObjectIndex].cost;
     }
 
     private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)
@@ -115,6 +115,7 @@ public class PlacementSystem : MonoBehaviour
     private void Update()
     {
         cellIndicator.SetActive(true);
+        Debug.Log(GameManager.Instance.gameState);
         if (selectedObjectIndex < 0)
             return;
         Vector3 mousePosition = inputManager.GetSelectedMapPosition(); //gets the location of what the mouse is pointing at
