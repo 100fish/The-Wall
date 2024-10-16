@@ -7,6 +7,7 @@ using UnityEngine.Tilemaps;
 
 public class InputManager : MonoBehaviour
 {
+    //GRIFFIN CODE
 
     [SerializeField]
     private Camera sceneCamera; //introduces a camera to work with

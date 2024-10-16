@@ -7,6 +7,8 @@ using UnityEngine;
 [CreateAssetMenu]
 public class ObjectsDatabaseSO : ScriptableObject
 {
+    //GRIFFIN CODE
+
     public List<ObjectData> objectsData;
 }
 

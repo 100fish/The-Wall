@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    //JACK CODE
+
+
     public float projectileLife = 1.0f;
     public int damageAmount = 1;
 

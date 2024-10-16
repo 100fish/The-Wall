@@ -5,6 +5,9 @@ using static UnityEngine.GraphicsBuffer;
 
 public class projectileShooting : MonoBehaviour
 {
+    //JACK CODE
+
+
     public Transform gunAimPoint;
     public Transform gun;
     public Transform gunPoint;

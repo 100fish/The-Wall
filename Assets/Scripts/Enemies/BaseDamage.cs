@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class BaseDamage : MonoBehaviour
 {
+    //GRIFFIN CODE
 
     public Turret1Shoot turret1Shoot;
 

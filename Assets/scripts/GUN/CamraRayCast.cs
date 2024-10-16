@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class CamraRayCast : MonoBehaviour
 {
+    //JACK CODE
 
     public int damageAmount = 1;
     // Start is called before the first frame update

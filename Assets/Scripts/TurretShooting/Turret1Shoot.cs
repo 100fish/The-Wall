@@ -7,6 +7,8 @@ using UnityEngine.UIElements;
 
 public class Turret1Shoot : MonoBehaviour
 {
+    //GRIFFIN CODE
+
     [SerializeField] private Transform[] points = { null, null };
     [SerializeField] public LineController line;
 

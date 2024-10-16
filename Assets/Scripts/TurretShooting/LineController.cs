@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class LineController : MonoBehaviour
 {
+    //GRIFFIN CODE
+
     public LineRenderer lr; //the linerendere component
     private Transform[] points = { null, null }; //matrix of points
     

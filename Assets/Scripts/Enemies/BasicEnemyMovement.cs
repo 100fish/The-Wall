@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class BasicEnemyMovement : MonoBehaviour
 {
+    //GRIFFIN CODE
 
     private NavMeshAgent m_NavAgent;
     [SerializeField] public Transform goal;

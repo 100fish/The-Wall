@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class GridData
 {
+    //GRIFFIN CODE
+
+
     Dictionary<Vector3Int, PlacementData> placedObjects = new Dictionary<Vector3Int, PlacementData>();
 
     public void AddObjectAt(Vector3Int gridPosition,

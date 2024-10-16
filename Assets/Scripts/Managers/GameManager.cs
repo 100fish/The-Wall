@@ -9,6 +9,9 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    //GRIFFIN CODE
+
+
     public int baseHealth = 100;
     public int health = 100;
     public float roundTime = 0;

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Target : MonoBehaviour
 {
+    //JACK CODE
+
+
     bool isHit = false;
     public int points = 1;
 

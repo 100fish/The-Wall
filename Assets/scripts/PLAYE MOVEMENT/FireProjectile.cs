@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class FireProjectile : MonoBehaviour
 {
+    //JACK CODE
+
     public GameObject blastboolet;
     public Transform spawnTransform;
     public float force = 500;

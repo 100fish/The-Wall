@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
+    //GRIFFIN CODE
+
     //private GameManager gameManager;
     public Transform goal;
     public GameObject enemyPrefab;
