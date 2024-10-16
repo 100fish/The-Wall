@@ -34,6 +34,7 @@ public class InputManager : MonoBehaviour
 
     public Vector3 GetSelectedMapPosition()
     {
+        //Debug.Log("Hellooo");
         Vector3 mousePos = Input.mousePosition; //Stores the mouse's current positon as a Vector
         mousePos.z = sceneCamera.nearClipPlane; //sets the stored Z coordinate to in front of the camera so that objects not rendered arent' selected
         Ray ray = sceneCamera.ScreenPointToRay(mousePos); // Casts a ray from the camera to the mouseposition

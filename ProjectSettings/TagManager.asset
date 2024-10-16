@@ -4,6 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - ShootIgnore
+  - Enemy
+  - ClickIgnore
   - Target
   layers:
   - Default
