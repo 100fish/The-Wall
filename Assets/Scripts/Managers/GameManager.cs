@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     bool changingToFPS;
     bool changingToTDF;
 
+    public Canvas canvas;
     public GameObject menuPanel;
     public GameObject gameplayPanel;
     public GameObject gameplayPanelFPS;
@@ -54,6 +55,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+
         if (Instance != null)
             Destroy(this);
         Instance = this;
