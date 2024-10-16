@@ -22,8 +22,8 @@ public class Turret1Shoot : MonoBehaviour
 
     void Start()
     {
-        line.SetUpLine(points);
-        points[1] = shootPos;
+        //line.SetUpLine(points);
+        //points[1] = shootPos;
     }
 
     private Transform GetClosestEnemyPos(List<GameObject> enemies)
@@ -70,19 +70,20 @@ public class Turret1Shoot : MonoBehaviour
     void Update()
     {
         shootTimer -= Time.deltaTime * shootSpeed;
-        if (shooting)
-        {
-            lineTimer -= Time.deltaTime;
-            line.SetUpLine(points);
-            if (lineTimer < 0)
-            {
-                lineTimer = 0.3f;
-                GameManager.Instance.Kill(target);
-                shooting = false;
-                points[0] = null;
-            }    
-        }
-        else if (shootTimer <= 0)
+        //if (shooting)
+        //{
+         //   lineTimer -= Time.deltaTime;
+        //    line.SetUpLine(points);
+        //    if (lineTimer < 0)
+        //    {
+        //        lineTimer = 0.3f;
+        //        GameManager.Instance.Kill(target);
+        //        shooting = false;
+        //        //points[0] = null;
+        //    }    
+        //}
+        //else
+        if (shootTimer < 0)
         {
             shootTimer = 0.5f;
             Debug.Log("shot");
@@ -94,10 +95,11 @@ public class Turret1Shoot : MonoBehaviour
     private void Shoot()
     {
         target = GetClosestEnemy(enemySpawner.enemyList);
+        Debug.Log(target);
         if (target != null)
         {
-            points[0] = target.transform;
-            shooting = true;
+            //points[0] = target.transform;
+            GameManager.Instance.Kill(target);
         }
 
     }

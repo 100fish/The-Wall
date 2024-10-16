@@ -21,14 +21,14 @@ public class LineController : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(points.Length);
-        if (points[0] != null || points[1] != null)
-        {
-            for (int i = 0; i < points.Length; i++) //for every point in the line
-            {
-                lr.SetPosition(i, points[i].position); //set the position of each index in the line renderer to the poisiton of each point in the array
-            }   
-        }
+        //Debug.Log(points.Length);
+        //if (points[0] != null || points[1] != null)
+        //{
+        //    for (int i = 0; i < points.Length; i++) //for every point in the line
+        //    {
+        //        lr.SetPosition(i, points[i].position); //set the position of each index in the line renderer to the poisiton of each point in the array
+        //    }   
+        //}
 
 
     }
