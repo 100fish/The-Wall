@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class projectileShooting : MonoBehaviour
 {
@@ -40,6 +41,7 @@ public class projectileShooting : MonoBehaviour
                     {
                         //Add points!!!
                         int newPoints = targetHit.Damage();
+                        GameManager.Instance.money += newPoints; 
                         //Deal with points
                         Debug.Log(newPoints);
                     }
