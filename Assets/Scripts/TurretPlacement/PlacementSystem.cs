@@ -79,7 +79,7 @@ public class PlacementSystem : MonoBehaviour
             database.objectsData[selectedObjectIndex].ID,
             placedGameObjects.Count - 1);
 
-        //newObject.GetComponent<Turret1Shoot>().enemySpawner = enemySpawner;
+        newObject.GetComponent<Turret1Shoot>().enemySpawner = enemySpawner;
         //newObject.GetComponent<Turret1Shoot>().line = lc;
 
         GameManager.Instance.money -= database.objectsData[selectedObjectIndex].cost;
@@ -115,7 +115,6 @@ public class PlacementSystem : MonoBehaviour
     private void Update()
     {
         cellIndicator.SetActive(true);
-        Debug.Log(GameManager.Instance.gameState);
         if (selectedObjectIndex < 0)
             return;
         Vector3 mousePosition = inputManager.GetSelectedMapPosition(); //gets the location of what the mouse is pointing at

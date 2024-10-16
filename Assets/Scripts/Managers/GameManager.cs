@@ -137,7 +137,7 @@ public class GameManager : MonoBehaviour
             fpsCC.enabled = true;
             Cursor.lockState = CursorLockMode.Locked;
 
-            freezeEnemiesToggle();
+
 
             gameState = GameState.PlayingFPS;
             changingToFPS = false;
@@ -180,7 +180,7 @@ public class GameManager : MonoBehaviour
             fpsCC.enabled = false;
             Cursor.lockState = CursorLockMode.Confined;
 
-            freezeEnemiesToggle();
+
 
             gameState = GameState.PlayingTDF;
             changingToTDF = false;
@@ -206,19 +206,6 @@ public class GameManager : MonoBehaviour
         else if (gameState == GameState.PlayingFPS)
         {
             changingToTDF = true;
-        }
-    }
-
-    public void freezeEnemiesToggle()
-    {
-
-        foreach (GameObject enemy in enemySpawner.enemyList)
-        {
-            NavMeshAgent tempNM = enemy.GetComponent<NavMeshAgent>();
-            if(tempNM !=null)
-            {
-                tempNM.enabled = !tempNM.enabled;
-            }
         }
     }
 
