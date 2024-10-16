@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -6,6 +7,8 @@ using UnityEngine;
 
 public class CamraRayCast : MonoBehaviour
 {
+
+    public int damageAmount = 1;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,10 +22,25 @@ public class CamraRayCast : MonoBehaviour
         {
 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit HitResult = new RaycastHit();
-            if (Physics.Raycast(ray, out HitResult))
+            RaycastHit hitResult = new RaycastHit();
+            if (Physics.Raycast(ray, out hitResult))
             {
-                Debug.Log(HitResult.transform.name);
+                //Debug.Log(hitResult.transform.name);
+
+                //Have we hit target?
+                //Cast Target Script
+                //Call target function to destroy it.
+                //
+                //If so, send point to where it is being stored (Player?)
+
+               
+                    Target targetHit = hitResult.transform.GetComponent<Target>();
+                    if (targetHit != null)
+                    {
+                     Debug.Log("Hit");
+                        targetHit.Damage();
+                    }
+
             }
 
         }

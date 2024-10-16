@@ -34,6 +34,9 @@ public class playerMovement : MonoBehaviour
 
     private CharacterController characterController;
 
+
+    public bool isActive = false;
+
     void Awake()
     {
         characterController = GetComponent<CharacterController>();
@@ -52,10 +55,6 @@ public class playerMovement : MonoBehaviour
                 verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y);
 
             }
-
-
-
-
         }
         else
         {
@@ -70,19 +69,9 @@ public class playerMovement : MonoBehaviour
                 verticalVelocity += Physics.gravity.y * gravityMultiplier * Time.deltaTime;
             }
         }
-
-          
     }
 
-
-
-
-        
-    
-        
-        
-        
-        void CameraMovement()
+    void CameraMovement()
     {
         float rotateYaw = Input.GetAxis("Mouse X") * mouseSensitivity;
         transform.Rotate(0, rotateYaw, 0);
@@ -92,9 +81,6 @@ public class playerMovement : MonoBehaviour
         roatateCameraPitch += -Input.GetAxis("Mouse Y") * mouseSensitivity;
         roatateCameraPitch = Mathf.Clamp(roatateCameraPitch, -pitchRange, pitchRange);
         firstPersonCam.transform.localRotation = Quaternion.Euler(roatateCameraPitch, 0, 0);
-
-
-
     }
 
 
@@ -102,11 +88,15 @@ public class playerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        JumpAndGravity();
+        if (isActive == false)
+            return;
+
         forwardInputValue = Input.GetAxisRaw("Vertical");
         strafeInputValue = Input.GetAxisRaw("Horizontal");
         jumpInput = Input.GetButtonDown("Jump");
         Movement();
-        JumpAndGravity();
+       
         CameraMovement();
 
     }
@@ -121,29 +111,6 @@ public class playerMovement : MonoBehaviour
 
         characterController.Move(direction);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
