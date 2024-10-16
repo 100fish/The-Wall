@@ -41,7 +41,7 @@ public class projectileShooting : MonoBehaviour
                     {
                         //Add points!!!
                         int newPoints = targetHit.Damage();
-                        GameManager.Instance.money += newPoints; 
+                        GameManager.Instance.money += 1; 
                         //Deal with points
                         Debug.Log(newPoints);
                     }

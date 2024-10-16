@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
@@ -136,6 +137,8 @@ public class GameManager : MonoBehaviour
             fpsCC.enabled = true;
             Cursor.lockState = CursorLockMode.Locked;
 
+            freezeEnemiesToggle();
+
             gameState = GameState.PlayingFPS;
             changingToFPS = false;
         }
@@ -149,7 +152,22 @@ public class GameManager : MonoBehaviour
         int seconds = Mathf.RoundToInt(timerFPS);
         FPStime.text = string.Format("Time: {0:D2}:{1:D2}",
                               (seconds / 60), (seconds % 60));
-        if (timerFPS <= 0 || changingToTDF)
+        if (health < 1)
+        {
+            gameState = GameState.GameOver;
+            foreach (GameObject enemy in enemySpawner.enemyList)
+            {
+                Destroy(enemy);
+            }
+            gameplayPanelFPS.SetActive(false);
+            menuPanel.SetActive(true);
+
+            TDFcam.enabled = !TDFcam.enabled;
+            FPScam.enabled = !FPScam.enabled;
+
+            titleText.text = "Your base was destroyed";
+        }
+        else if (timerFPS <= 0 || changingToTDF)
         {
             timerFPS = timerFPSAmount;
 
@@ -161,6 +179,8 @@ public class GameManager : MonoBehaviour
 
             fpsCC.enabled = false;
             Cursor.lockState = CursorLockMode.Confined;
+
+            freezeEnemiesToggle();
 
             gameState = GameState.PlayingTDF;
             changingToTDF = false;
@@ -186,6 +206,19 @@ public class GameManager : MonoBehaviour
         else if (gameState == GameState.PlayingFPS)
         {
             changingToTDF = true;
+        }
+    }
+
+    public void freezeEnemiesToggle()
+    {
+
+        foreach (GameObject enemy in enemySpawner.enemyList)
+        {
+            NavMeshAgent tempNM = enemy.GetComponent<NavMeshAgent>();
+            if(tempNM !=null)
+            {
+                tempNM.enabled = !tempNM.enabled;
+            }
         }
     }
 
