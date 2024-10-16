@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Griffin's Scene (MAP).unity
+    guid: 55edc1d6a1ea77241b08b1a8fb1b568f
   m_configObjects: {}
