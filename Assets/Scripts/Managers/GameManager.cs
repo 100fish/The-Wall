@@ -12,15 +12,29 @@ public class GameManager : MonoBehaviour
     public int health = 100;
     public float roundTime = 0;
     public int money = 5;
+    public float timerFPS = 30;
+    public float timerFPSAmount = 30;
+
+    bool changingToFPS;
+    bool changingToTDF;
 
     public GameObject menuPanel;
     public GameObject gameplayPanel;
+    public GameObject gameplayPanelFPS;
+
+    public Camera TDFcam;
+    public Camera FPScam;
+
+    public TextMeshProUGUI FPSmoney;
+    public TextMeshProUGUI FPStime;
 
     public TextMeshProUGUI moneyText; 
     public TextMeshProUGUI healthText;
     public TextMeshProUGUI titleText;
     public Button newGameButton;
     private GameObject empty;
+
+    public CharacterController fpsCC;
 
     public EnemySpawner enemySpawner;
 
@@ -29,7 +43,8 @@ public class GameManager : MonoBehaviour
     public enum GameState
     {
         Start,
-        Playing,
+        PlayingTDF,
+        PlayingFPS,
         GameOver
     };
 
@@ -46,6 +61,10 @@ public class GameManager : MonoBehaviour
         empty = new GameObject();
         titleText.text = "Welcome to FPFTD!";
         gameplayPanel.SetActive(false);
+        gameplayPanelFPS.SetActive(false);
+        TDFcam.enabled = true;
+        FPScam.enabled = false;
+        fpsCC.enabled = false;
     }
 
     void Update()
@@ -61,8 +80,11 @@ public class GameManager : MonoBehaviour
             case GameState.Start:
                 GameStateStart();
                 break;
-            case GameState.Playing:
-                GameStatePlaying();
+            case GameState.PlayingTDF:
+                GameStatePlayingTDF();
+                break;
+            case GameState.PlayingFPS:
+                GameStatePlayingFPS();
                 break;
             case GameState.GameOver:
                 GameStateGameOver();
@@ -77,14 +99,14 @@ public class GameManager : MonoBehaviour
     {
         menuPanel.SetActive(false);
         gameplayPanel.SetActive(true);
-        gameState = GameState.Playing;
+        gameState = GameState.PlayingTDF;
         roundTime = 0;
         health = baseHealth;
 
     }
 
 
-    private void GameStatePlaying()
+    private void GameStatePlayingTDF()
     {
         roundTime += Time.deltaTime;
         healthText.text = "Base health: " + health;
@@ -101,16 +123,68 @@ public class GameManager : MonoBehaviour
             menuPanel.SetActive(true);
             titleText.text = "Your base was destroyed";
         }
+        else if (changingToFPS)
+        {
+            gameplayPanel.SetActive(false);
+            gameplayPanelFPS.SetActive(true);
+
+            TDFcam.enabled = !TDFcam.enabled;
+            FPScam.enabled = !FPScam.enabled;
+
+            fpsCC.enabled = true;
+            Cursor.lockState = CursorLockMode.Locked;
+
+            gameState = GameState.PlayingFPS;
+            changingToFPS = false;
+        }
+    }
+
+    private void GameStatePlayingFPS()
+    {
+        timerFPS -= Time.deltaTime;
+        FPSmoney.text = "You have $" + money;
+
+        int seconds = Mathf.RoundToInt(timerFPS);
+        FPStime.text = string.Format("Time: {0:D2}:{1:D2}",
+                              (seconds / 60), (seconds % 60));
+        if (timerFPS <= 0 || changingToTDF)
+        {
+            timerFPS = timerFPSAmount;
+
+            gameplayPanel.SetActive(true);
+            gameplayPanelFPS.SetActive(false);
+
+            TDFcam.enabled = !TDFcam.enabled;
+            FPScam.enabled = !FPScam.enabled;
+
+            fpsCC.enabled = false;
+            Cursor.lockState = CursorLockMode.Confined;
+
+            gameState = GameState.PlayingTDF;
+            changingToTDF = false;
+        }
     }
 
     private void GameStateGameOver()
     {
-
+        
     }
 
     public void OnNewGame()
     {
         gameState = GameState.Start;
+    }
+
+    public void ChangeMode()
+    {
+        if (gameState == GameState.PlayingTDF)
+        {
+            changingToFPS = true;
+        }
+        else if (gameState == GameState.PlayingFPS)
+        {
+            changingToTDF = true;
+        }
     }
 
     public void Kill(GameObject target)
