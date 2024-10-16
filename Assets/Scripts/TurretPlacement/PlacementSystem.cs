@@ -20,6 +20,7 @@ public class PlacementSystem : MonoBehaviour
     private ObjectsDatabaseSO database;
     private int selectedObjectIndex = 1;
     private GridData towerData;
+    public LineController lc;
 
     private Renderer previewRenderer;
 
@@ -51,16 +52,23 @@ public class PlacementSystem : MonoBehaviour
 
     private void PlaceStructure()
     {
-        if(inputManager.isPointerOverUI())
-        {
+
+        //if (inputManager.isPointerOverUI())
+        //{
+        //   return;
+        //}
+
+        if (database.objectsData[selectedObjectIndex].cost > GameManager.Instance.money)
             return;
-        }
+
+        GameManager.Instance.money -= database.objectsData[selectedObjectIndex].cost;
 
         Vector3 mousePosition = inputManager.GetSelectedMapPosition(); //gets the location of what the mouse is pointing at
         Vector3Int gridPosition = grid.WorldToCell(mousePosition); //converst that position to cell coordinates and stores it
 
         bool placementValidity = CheckPlacementValidity(gridPosition, selectedObjectIndex);//checks if thesize is too big
-       
+
+
         if (placementValidity == false)
             return;
 
@@ -73,16 +81,24 @@ public class PlacementSystem : MonoBehaviour
             database.objectsData[selectedObjectIndex].ID,
             placedGameObjects.Count - 1);
 
+        newObject.GetComponent<Turret1Shoot>().enemySpawner = enemySpawner;
+        newObject.GetComponent<Turret1Shoot>().line = lc;
     }
 
     private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)
     {
-        TileBase hitTile = tilemap.GetTile(gridPosition); //this part of the code is mine, it checks what tile is selected and only builds on buildable tiles
-        if (hitTile.name != "Floor")
+
+        if (gridPosition.z != 0)
         {
-            //cellIndicator.SetActive(false);
+            cellIndicator.SetActive(false);
             return false;
         }
+
+
+        TileBase hitTile = tilemap.GetTile(gridPosition); //this part of the code is mine, it checks what tile is selected and only builds on buildable tiles
+        if (hitTile.name != "Floor")
+            return false;
+        
 
         GridData selectedData = towerData;
         return selectedData.CanPlaceObjectAt(gridPosition, database.objectsData[selectedObjectIndex].size);//checks if the size is too big
@@ -98,6 +114,7 @@ public class PlacementSystem : MonoBehaviour
 
     private void Update()
     {
+        cellIndicator.SetActive(true);
         if (selectedObjectIndex < 0)
             return;
         Vector3 mousePosition = inputManager.GetSelectedMapPosition(); //gets the location of what the mouse is pointing at

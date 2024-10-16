@@ -1,53 +1,36 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class Turret1Shoot : MonoBehaviour
 {
+    [SerializeField] private Transform[] points = { null, null };
+    [SerializeField] public LineController line;
+
     public EnemySpawner enemySpawner;
-    public Transform turretAimPoint;
-    public Transform turret;
-    public Transform turretPoint;
-    public Transform turretGun;
-    public float distance = 200;
+    public Transform shootPos;
+
     private float shootTimer = 1;
     private int shootSpeed = 1;
-    private LineRenderer lr;
-    private Transform[] points;
-    //public float hitForce = 20;
+    private float lineTimer = 0.3f;
+    private bool lineComplete = false;
+    private bool shooting = false;
+    private GameObject target;
 
-    //Camera cam;
-
-    // Start is called before the first frame update
     void Start()
     {
-        lr = GetComponent<LineRenderer>();
-    }
-
-
-    void Shoot()
-    {
-        RaycastHit hit = new RaycastHit();
-
-
-       // if (Physics.Raycast(turretGun.position, GetClosestEnemy(enemySpawner.enemyList), out hit, distance))
-        {
-            Debug.Log(hit.transform.name);
-            Rigidbody rb = hit.transform.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                rb.AddForce(turret.forward, ForceMode.Impulse);
-
-            }
-        }
+        //line.SetUpLine(points);
+        //points[1] = shootPos;
     }
 
     private Transform GetClosestEnemyPos(List<GameObject> enemies)
     {
 
         Transform tMin = null;
-        float minDist = 3;
+        float minDist = 15;
         Vector3 currentPOS = transform.position;
         foreach (GameObject t in enemies)
         {
@@ -64,16 +47,19 @@ public class Turret1Shoot : MonoBehaviour
 
     private GameObject GetClosestEnemy(List<GameObject> enemies)
     {
-
-        GameObject target = null;
-        float minDist = 3;
-        Vector3 currentPOS = transform.position;
-        foreach (GameObject t in enemies)
+        GameObject target = null; //instantiates target as an empty gameobject variable
+        float minDist = 12; //instantiates the minimum distance to three
+        Vector3 currentPOS = transform.position; //sets the currentpos to the current position of the tower (works perfectly)
+        foreach (GameObject t in enemies) //for each gameobject in the enemies list from EnemySpawner (enemy list works)
         {
-            Transform tt = t.transform;
-            float dist = Vector3.Distance(tt.position, currentPOS);
-            if (dist < minDist)
+            if (t.gameObject.tag == "ShootIgnore")
+                continue;
+            Transform tt = t.transform; //transform value tt is defined as the transform of a particular enemy
+            float dist = Vector3.Distance(tt.position, currentPOS); //dist = the distance between the current pos and tt
+            Debug.Log(dist + "," + t.name);
+            if (dist < minDist) // if distance is less than the min distance
             {
+                Debug.Log(t.name);
                 target = t;
                 minDist = dist;
             }
@@ -81,33 +67,42 @@ public class Turret1Shoot : MonoBehaviour
         return target;
     }
 
-    private void OnEnable()
-    {
-        points[0] = turretGun;
-    }
-
-    public void SetUpLine(Transform[] points)
-    {
-            lr.positionCount = points.Length;
-            this.points = points;
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        //Turret.LookAt(turretAimPoint.forward * 100);
         shootTimer -= Time.deltaTime * shootSpeed;
-        if (shootTimer < 0);
+        //if (shooting)
+        //{
+         //   lineTimer -= Time.deltaTime;
+        //    line.SetUpLine(points);
+        //    if (lineTimer < 0)
+        //    {
+        //        lineTimer = 0.3f;
+        //        GameManager.Instance.Kill(target);
+        //        shooting = false;
+        //        //points[0] = null;
+        //    }    
+        //}
+        //else
+        if (shootTimer < 0)
         {
-            GameObject target = GetClosestEnemy(enemySpawner.enemyList);
-            points[1] = target.transform;
+            shootTimer = 0.5f;
+            Debug.Log("shot");
+            Shoot();
 
-            for (int i = 0; i < points.Length; i++)
-            {
-                lr.SetPosition(i, points[i].position);
-            }
-
-            Destroy(target);
         }
     }
+
+    private void Shoot()
+    {
+        target = GetClosestEnemy(enemySpawner.enemyList);
+        Debug.Log(target);
+        if (target != null)
+        {
+            //points[0] = target.transform;
+            GameManager.Instance.Kill(target);
+        }
+
+    }
+
+
 }
